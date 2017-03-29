@@ -3,6 +3,7 @@ package com.example.userasus.asynctask;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -16,8 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.userasus.asynctask.BaseDatos.Conexion;
+import com.example.userasus.asynctask.Data.Conection;
+import com.example.userasus.asynctask.Services.Hora;
 import com.example.userasus.asynctask.Services.Horario;
 
+import java.io.IOException;
 import java.util.Random;
 
 //https://developer.android.com/reference/android/os/AsyncTask.html
@@ -30,14 +35,22 @@ public class MainActivity extends AppCompatActivity {
     Boolean on=false;
     Boolean flagService=false;
     Button btn;
+
+    Conection con;
+    SQLiteDatabase db;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         linear = (LinearLayout) findViewById(R.id.cuadro);
-        valor = (TextView) findViewById(R.id.tvEscribe);
         btn = (Button) findViewById(R.id.btn_service);
+        valor = (TextView) findViewById(R.id.tvEscribe);
         campo = (EditText) findViewById(R.id.editText);
+        con = new Conection(this,"colores",null,1);
+        db = con.getWritableDatabase();
+
+
     }
     public void colorear(View v) throws InterruptedException {
         for(int h=0;h<=199;){
@@ -65,26 +78,33 @@ public class MainActivity extends AppCompatActivity {
             obj.cancel(true);
             on=false;
         }
-    }
-
-    public void Limpiar(View v){
-        valor.setText(""+" ");
-        campo.setText(""+" ");
-    }
-
-    public void LlamarServicio(View v){
-        if(flagService){
-            stopService(new Intent(MainActivity.this,Horario.class));
-            flagService=false;
-            btn.setBackgroundColor(Color.rgb(0,255,0));
-        }else{
-            startService(new Intent(MainActivity.this,Horario.class));
-            Toast.makeText(this,"ON",Toast.LENGTH_LONG).show();
-            flagService=true;
-            btn.setBackgroundColor(Color.rgb(255,0,0));
+        //// LA COPIA DE LA BASE DE DATOS
+        try {
+            con.BD_backup();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
+    //metodo para limpiar dos objetos de la GUI
+  public  void Limpiar(View v){
+      valor.setText("");
+      campo.setText("");
+  }
+ public void LlamarServicio(View a){
+     if(flagService){
+         stopService(new Intent(MainActivity.this,Hora.class));
+         flagService=false;
+         //btn.setBackgroundColor(Color.green(255));
+         //btn.setBackgroundColor(Color.GREEN);
+         btn.setBackgroundColor(Color.rgb(0,255,0));
+     }else{
+         startService(new Intent(MainActivity.this, Hora.class));
+         flagService=true;
+         //btn.setBackgroundColor(Color.red(255));
+         //btn.setBackgroundColor(Color.RED);
+         btn.setBackgroundColor(Color.rgb(255,0,0));
+     }
+ }
     public void pintar(int x){
         int red= this.generarAleatorio2();
         int green = this.generarAleatorio2();
@@ -106,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             int green=generarAleatorio();
             linear.setBackgroundColor(Color.rgb(red,green,blue));
             //String label=valor.getText().toString();
+            //INSERTAR EN BASE DE DATOS
             valor.setText("X: "+String.valueOf(values[0]));
         }
         @Override
