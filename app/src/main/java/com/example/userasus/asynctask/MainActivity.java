@@ -1,6 +1,7 @@
 package com.example.userasus.asynctask;
 
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.userasus.asynctask.BaseDatos.ColoresContract;
 import com.example.userasus.asynctask.BaseDatos.Conexion;
 import com.example.userasus.asynctask.Data.Conection;
 import com.example.userasus.asynctask.Services.Hora;
@@ -126,7 +128,18 @@ public class MainActivity extends AppCompatActivity {
             int green=generarAleatorio();
             linear.setBackgroundColor(Color.rgb(red,green,blue));
             //String label=valor.getText().toString();
-            //INSERTAR EN BASE DE DATOS
+            /*ContentValues valores = new ContentValues();
+            valores.put("red",red);
+            valores.put("green",green);
+            valores.put("blue",blue);
+            db.insert("colores",null,valores);*/
+
+            ContentValues valores2 = new ContentValues();
+            valores2.put(com.example.userasus.asynctask.Data.ColoresContract.ColorEntry.RED,red);
+            valores2.put(com.example.userasus.asynctask.Data.ColoresContract.ColorEntry.GREEN,green);
+            valores2.put(com.example.userasus.asynctask.Data.ColoresContract.ColorEntry.BLUE,blue);
+            db.insert(com.example.userasus.asynctask.Data.ColoresContract.ColorEntry.TABLENAME,null,valores2);
+
             valor.setText("X: "+String.valueOf(values[0]));
         }
         @Override
