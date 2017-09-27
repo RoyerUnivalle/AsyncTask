@@ -25,6 +25,7 @@ import com.example.userasus.asynctask.Services.Hora;
 import com.example.userasus.asynctask.Services.Horario;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Random;
 
 //https://developer.android.com/reference/android/os/AsyncTask.html
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     Conection con;
     SQLiteDatabase db;
 
+    Escribir objE;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         campo = (EditText) findViewById(R.id.editText);
         con = new Conection(this,"colores",null,1);
         db = con.getWritableDatabase();
+
 
 
     }
@@ -173,6 +177,50 @@ public class MainActivity extends AppCompatActivity {
         }
         public int generarAleatorio(){
             return  new Random().nextInt(256);
+        }
+    }
+
+    public void Numero1(View g) throws InterruptedException {
+        String[] arreglo = new String[3];
+        arreglo[0]="Andrea";
+        arreglo[1]="camilo";
+        arreglo[2]="oscar";
+        for(int i=0;i<200;i++){
+            valor.append("/n"+i+": "+arreglo[new Random().nextInt(3)]);
+            Thread.sleep(50);/// EL HILO PRINCIPAL SE TOMA UNA MAUSA DE 50 MLS
+        }
+    }
+    public void Numero2(View g){
+
+        objE =  new Escribir();
+        objE.execute();
+
+    }
+///ESO ES UN NUEVO HILO DIFERENTEAL HILO PRINCIPAL
+    public class Escribir extends AsyncTask<Void,Integer,Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            for(int i=0;i<200;i++){
+                try {
+                    publishProgress(i);//llama a onProgressUpdate
+                    Thread.sleep(50);// ESTA EN EL AMBITO DEL HILO CREADO/SECUNDARIO/ETC
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            String[] arreglo = new String[3];
+            arreglo[0]="Andrea";
+            arreglo[1]="camilo";
+            arreglo[2]="oscar";
+            valor.setText("/n"+values[0]+": "+arreglo[new Random().nextInt(3)]);
+            //valor.setBackgroundColor(Color.rgb(255,255,255));
+
         }
     }
 }

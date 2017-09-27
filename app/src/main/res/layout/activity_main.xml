@@ -20,27 +20,27 @@
         android:id="@+id/cuadro"></LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.20">
+        android:layout_weight="0.20"
+        android:orientation="horizontal">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Asincrono"
-            android:layout_weight="2"
             android:id="@+id/btnAsincrono"
-            android:onClick="colorear2" />
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sincrono"
-            android:layout_weight="1"
+            android:layout_weight="2"
+            android:onClick="colorear2"
+            android:text="Asincrono" />
+
+        <Button
             android:id="@+id/bntSincrono"
-            android:onClick="colorear" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="colorear"
+            android:text="Sincrono" />
     </LinearLayout>
 
 
@@ -50,13 +50,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.20">
+
         <Button
+            android:id="@+id/btn_limpiar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Limpiar"
             android:onClick="Limpiar"
-            android:id="@+id/btn_limpiar" />
+            android:text="Limpiar" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,13 +68,19 @@
             android:id="@+id/btn_service" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvEscribe"
-        android:textSize="12pt"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.06" />
+  <ScrollView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+      <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/tvEscribe"
+      android:textSize="12pt"
+      android:layout_gravity="center_horizontal"
+      android:layout_weight="0.06" /></ScrollView>
+
+
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,4 +88,28 @@
         android:id="@+id/editText"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.20" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.20"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="Numero1"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:onClick="Numero2"
+            android:text="Button" />
+    </LinearLayout>
+
 </LinearLayout>
